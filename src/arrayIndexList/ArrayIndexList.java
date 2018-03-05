@@ -3,9 +3,9 @@ package arrayIndexList;
 import indexList.IndexList;
 
 public class ArrayIndexList<E> implements IndexList<E> {
-	private static final int INITCAP = 5; 
-	private static final int CAPTOAR = 5; 
-	private static final int MAXEMPTYPOS = 10; 
+	private static final int INITCAP = 1; 
+	private static final int CAPTOAR = 1; 
+	private static final int MAXEMPTYPOS = 2; 
 	private E[] element; 
 	private int size; 
 
@@ -17,13 +17,24 @@ public class ArrayIndexList<E> implements IndexList<E> {
 
 	public void add(int index, E e) throws IndexOutOfBoundsException {
 		// ADD CODE AS REQUESTED BY EXERCISES
+		if(!isInBounds(index, size)){
+			throw new IndexOutOfBoundsException("Not a valid index (Out of Bounds)");
+		}
+		else{
+			if(size == element.length){
+				changeCapacity(size + CAPTOAR); 
+			}
+			moveDataOnePositionTR(index, size - 1);
+			element[index] = e;
+		}
+		size++;
 	}
 
 
 	public void add(E e) {
 		// ADD CODE AS REQUESTED BY EXERCISES
 		if(size == element.length){
-			changeCapacity(size * 2);
+			changeCapacity(size + CAPTOAR);
 		}
 		element[size] = e;
 		size++;
@@ -49,19 +60,42 @@ public class ArrayIndexList<E> implements IndexList<E> {
 
 	public E remove(int index) throws IndexOutOfBoundsException {
 		// ADD AND MODIFY CODE AS REQUESTED BY EXERCISES
-		return null;
+		if(!isInBounds(index, size)){
+			throw new IndexOutOfBoundsException("Not a valid index (Out of Bounds)");
+		}
+		E etr = element[index];
+		if(index == size - 1){
+			element[index] = null;
+		}
+		else{
+			moveDataOnePositionTL(index, size-1);
+		}
+		size--;
+		if(element.length - size > MAXEMPTYPOS){
+			changeCapacity(element.length - 10);
+		}
+		return etr;
 	}
 
 
 	public E set(int index, E e) throws IndexOutOfBoundsException {
 		// ADD AND MODIFY CODE AS REQUESTED BY EXERCISES
-		return null;
+		if(!isInBounds(index, size)){
+			throw new IndexOutOfBoundsException("Not a valid index (Out of Bounds)");
+		}
+		E etr = element[index];
+		element[index] = e;
+		return etr;
 	}
 
 
 	public int size() {
 		return size;
 	}	
+	
+	public int capacity(){
+		return element.length;
+	}
 	
 	
 	
@@ -100,7 +134,7 @@ public class ArrayIndexList<E> implements IndexList<E> {
 	//testing if the index is valid 
 	//i = index, m= upperbound
 	private boolean isInBounds(int i, int m){
-		return i >= 0 && i < m;
+		return i >= 0 && i <= m;
 	}
 
 
@@ -116,5 +150,6 @@ public class ArrayIndexList<E> implements IndexList<E> {
 		// TODO as in Exercise 3
 		return null;
 	}
+	
 
 }
