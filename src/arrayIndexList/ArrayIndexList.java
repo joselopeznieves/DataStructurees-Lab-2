@@ -1,5 +1,7 @@
 package arrayIndexList;
 
+import java.util.Arrays;
+
 import indexList.IndexList;
 
 public class ArrayIndexList<E> implements IndexList<E> {
@@ -147,14 +149,15 @@ public class ArrayIndexList<E> implements IndexList<E> {
 	// The following two methods are to be implemented as part of an exercise
 	public Object[] toArray() {
 		// TODO es in Exercise 3
-		return null;
+		
+		return Arrays.copyOf(element, size);
 	}
 
 
 	@Override
 	public <T1> T1[] toArray(T1[] array) {
 		// TODO as in Exercise 3
-		return null;
+		return (T1[]) Arrays.copyOf(element, size, array.getClass());
 	}
 	
 
